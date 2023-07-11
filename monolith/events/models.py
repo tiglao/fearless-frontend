@@ -75,6 +75,8 @@ class Conference(models.Model):
         on_delete=models.CASCADE,
     )
 
+    # picture_url = models.URLField(null=True)
+
     def get_api_url(self):
         return reverse("api_show_conference", kwargs={"pk": self.pk})
 
