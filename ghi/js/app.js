@@ -1,3 +1,19 @@
+function createCard(name, description, pictureUrl) {
+    return `
+        <div class="col mb-3">
+            <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+                <img src="${pictureUrl}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">${name}</h5>
+                    <p class="card-text">${description}</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+}
+
+
 window.addEventListener('DOMContentLoaded', async () => {
 
     const url = 'http://localhost:8000/api/conferences/';
@@ -10,24 +26,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         } else {
             const data = await response.json();
 
-            const conference = data.conferences[0];
-            const nameTag = document.querySelector('.card-title');
-            nameTag.innerHTML = conference.name;
-
-            const detailUrl = `http://localhost:8000${conference.href}`;
-            const detailResponse = await fetch(detailUrl);
-            if (detailResponse.ok) {
-                const details = await detailResponse.json();
-                const description = details.conference.description;
-                const detailTag = document.querySelector('.card-text');
-                const picture_url = details.conference.location.picture_url;
-                detailTag.innerHTML = description;
-                const imageTag = document.querySelector('.card-img-top');
-                imageTag.src = picture_url;
+            for (let conference of data.conferences) {
+                const detailUrl = `http://localhost:8000${conference.href}`;
+                const detailResponse = await fetch(detailUrl);
+                if (detailResponse.ok) {
+                    const details = await detailResponse.json();
+                    const name = details.conference.name;
+                    const description = details.conference.description;
+                    const pictureUrl = details.conference.location.picture_url;
+                    const html = createCard(name, description, pictureUrl);
+                    const column = document.querySelector('.row');
+                    column.innerHTML += html;
+                }
             }
         }
     } catch (e) {
-      // Figure out what to do if an error is raised
+        console.log("Javascript error.")
     }
 
 
