@@ -18,22 +18,24 @@ function dateTranslation(d) {
     return `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
 }
 
-// function errorAlert() {
-//     return ``;
-// }
-
-
-
+function errorAlert() {
+    return `
+        <div class="col-md-12 mt-2 alert alert-warning full-width-div" role="alert">No conferences to show. Please contact a site administrator.</div>
+    `;
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
 
     const url = 'http://localhost:8000/api/conferences/';
 
-    try {
-        const response = await fetch(url);
+      try {
+        const response = await zfetch(url);
 
         if (!response.ok) {
-            //iemsss
+            const errorHtml = errorAlert();
+            const error = document.querySelector('.row');
+            error.innerHTML += errorHtml;
+            console.log("Response error.")
         } else {
             const data = await response.json();
 
@@ -61,9 +63,10 @@ window.addEventListener('DOMContentLoaded', async () => {
             }
         }
     } catch (e) {
-        // console.log("Javascript error.")
-        // const error = document.querySelector('.alert');
-        // error.innerHTML += html;
+        const errorHtml = errorAlert();
+        const error = document.querySelector('.row');
+        error.innerHTML += errorHtml;
+        console.log("Javascript error.")
     }
 
 
