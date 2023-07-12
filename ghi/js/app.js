@@ -1,17 +1,28 @@
-function createCard(name, description, pictureUrl) {
+function createCard(name, description, pictureUrl, starts, ends, location) {
     return `
         <div class="col mb-3">
             <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
                 <img src="${pictureUrl}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">${name}</h5>
+                    <h6>${location}</h6>
                     <p class="card-text">${description}</p>
                 </div>
-            </div>
+                <div class="card-footer"><small class="text-muted">${starts} - ${ends}</div></small></div>
         </div>
     `;
 
 }
+
+function dateTranslation(d) {
+    return `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+}
+
+// function errorAlert() {
+//     return ``;
+// }
+
+
 
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -22,7 +33,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(url);
 
         if (!response.ok) {
-            // Figure out what to do when the response is bad
+            //iemsss
         } else {
             const data = await response.json();
 
@@ -31,18 +42,33 @@ window.addEventListener('DOMContentLoaded', async () => {
                 const detailResponse = await fetch(detailUrl);
                 if (detailResponse.ok) {
                     const details = await detailResponse.json();
+
                     const name = details.conference.name;
                     const description = details.conference.description;
                     const pictureUrl = details.conference.location.picture_url;
-                    const html = createCard(name, description, pictureUrl);
+                    const location = details.conference.location.name;
+
+                    const startDate = new Date(details.conference.starts);
+                    const starts = dateTranslation(startDate);
+                    const endDate = new Date(details.conference.ends);
+                    const ends = dateTranslation(endDate);
+
+                    const html = createCard(name, description, pictureUrl, starts, ends, location);
                     const column = document.querySelector('.row');
                     column.innerHTML += html;
+
                 }
             }
         }
     } catch (e) {
-        console.log("Javascript error.")
+        // console.log("Javascript error.")
+        // const error = document.querySelector('.alert');
+        // error.innerHTML += html;
     }
 
 
   });
+
+
+
+  // could be useful to for ACL to make sure that the start/end date has the correct form
