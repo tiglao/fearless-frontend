@@ -57,11 +57,14 @@ class ConferenceDetailEncoder(ModelEncoder):
 def api_list_states(request):
     states = State.objects.order_by("name")
     state_list = []
+
     for state in states:
         state_dict = {}
         state_dict["name"] = state.name
         state_dict["abbreviation"] = state.abbreviation
         state_list.append(state_dict)
+
+    print(states)
     return JsonResponse({"states": state_list})
     # get states from database ordered by name
     # loop through states
@@ -107,6 +110,7 @@ def api_list_conferences(request):
         )
     else:
         content = json.loads(request.body)
+        print(content)
 
         # Get the Location object and put it in the content dict
         try:
