@@ -53,6 +53,32 @@ class ConferenceDetailEncoder(ModelEncoder):
     }
 
 
+@require_http_methods(["GET"])
+def api_list_states(request):
+    states = State.objects.order_by("name")
+    state_list = []
+    for state in states:
+        state_dict = {}
+        state_dict["name"] = state.name
+        state_dict["abbreviation"] = state.abbreviation
+        state_list.append(state_dict)
+    return JsonResponse({"states": state_list})
+    # get states from database ordered by name
+    # loop through states
+        # if the response is okay
+            # create state dict
+            # store data in details
+            # add name to dict
+            # add abbreviation to dict
+            # append states list with dict
+    # create new dictionary with "keys" key and sorted states list value
+
+    #return JsonResponse with dictionary {"keys":list_of_state_dicts}, ordered by name of state
+
+
+
+
+
 @require_http_methods(["GET", "POST"])
 def api_list_conferences(request):
     """
