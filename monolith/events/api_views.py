@@ -64,44 +64,30 @@ def api_list_states(request):
         state_dict["abbreviation"] = state.abbreviation
         state_list.append(state_dict)
 
-    print(states)
     return JsonResponse({"states": state_list})
-    # get states from database ordered by name
-    # loop through states
-        # if the response is okay
-            # create state dict
-            # store data in details
-            # add name to dict
-            # add abbreviation to dict
-            # append states list with dict
-    # create new dictionary with "keys" key and sorted states list value
-
-    #return JsonResponse with dictionary {"keys":list_of_state_dicts}, ordered by name of state
 
 
+# @require_http_methods(["GET"])
+# def api_list_conferences(request):
+#     conferences = Conference.objects.order_by("name")
+#     print(conferences)
+#     # conference_list = []
+#     # for conference in conferences:
+#     #     conference_dict = {}
+#     #     conference_dict["name" = conference.name]
+#     #     conference_dict["starts" = conference.starts]
+#     #     conference_dict["ends" = conference.ends]
+#     #     conference_dict["description" = conference.description]
+#     #     conference_dict["max_attendees" = conference.max_attendees]
+#     #     conference_dict["name" = conference.name]
+#     #     conference_list.append(conference_dict)
+
+#     # return JsonResponse({"conferences": conference_list})
 
 
 
 @require_http_methods(["GET", "POST"])
 def api_list_conferences(request):
-    """
-    Lists the conference names and the link to the conference.
-
-    Returns a dictionary with a single key "conferences" which
-    is a list of conference names and URLS. Each entry in the list
-    is a dictionary that contains the name of the conference and
-    the link to the conference's information.
-
-    {
-        "conferences": [
-            {
-                "name": conference's name,
-                "href": URL to the conference,
-            },
-            ...
-        ]
-    }
-    """
     if request.method == "GET":
         conferences = Conference.objects.all()
         return JsonResponse(
@@ -128,6 +114,7 @@ def api_list_conferences(request):
             encoder=ConferenceDetailEncoder,
             safe=False,
         )
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def api_show_conference(request, pk):
