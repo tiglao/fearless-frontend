@@ -1,5 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
 import Nav from './Nav';
 
 function App(props) {
@@ -7,7 +5,8 @@ function App(props) {
     return null;
   }
   return (
-+    <Nav />
+    <>
+      <Nav />
       <div className="container">
         <table className="table table-striped">
           <thead>
@@ -17,13 +16,7 @@ function App(props) {
             </tr>
           </thead>
           <tbody>
-            {/* for (let attendee of props.attendees) {
-              <tr>
-                <td>{ attendee.name }</td>
-                <td>{ attendee.conference }</td>
-              </tr>
-            } */}
-            {props.attendees.map(attendee => {
+            {props.attendees && props.attendees.map(attendee => {
               return (
                 <tr key={attendee.href}>
                   <td>{ attendee.name }</td>
@@ -34,7 +27,8 @@ function App(props) {
           </tbody>
         </table>
       </div>
+    </>
   );
 }
 
-export default App
+export default App;
